@@ -27,7 +27,6 @@ public class NewsToDay {
             e.printStackTrace();
         }
 
-//
         Elements newsAllList = html.select(".list_todayseries");
         System.out.println(newsAllList);
 
