@@ -38,28 +38,29 @@ public class Starbecks extends WebBase{
 
             try {
                 String script = String.format("getStoreDetail(%d)", i);
+//                String s = "getStoreDetail(" + i + ")"; 위랑 같은 거
                 js.executeScript(script);
-                Thread.sleep(2000);
+                Thread.sleep(500);
 
                 String html = driver.getPageSource();
+
+//                가져온 문자열을 jsoup으로 파싱
                 Document doc = Jsoup.parse(html);
+//                css 선택자로 태그명과 클래스값을 함께 사용
+                Element shopArea_pop = doc.select("div.shopArea_pop01_inner").first();
+//                제목을 저장하고 있는 태그를 한 번에 검색
+                Element shopTitle = shopArea_pop.select("header.titl").first().select("h6").first();
+//                주소 및 전화번호가 있는 dd 태그를 한 번에 검색
+                Elements shopArea_infoWrap = shopArea_pop.select("div.shopArea_infoWrap").first().select("dd");
 
-                Element shopArea_pop = doc.select("div.shopArea_pop").first();
-                Element shopTitle = shopArea_pop.select("h6").first();
-                Element box_info = shopArea_pop.select("div.box_info").first();
-                Element shopArea_infoWrap = box_info.select("div.shopArea_infoWrap").first();
-
-                Element shopAddrdd = shopArea_infoWrap.select("dd").first();
-                Element shopTeldd = shopArea_infoWrap.select("dd").get(2);
-                Element cafetimeWrap = shopArea_pop.select("div.cafetimeWrap").first();
+                Element shopAddrdd = shopArea_infoWrap.get(0);
+                Element shopTeldd = shopArea_infoWrap.get(1);
 
                 String shopName = shopTitle.text();
                 String shopAddr = shopAddrdd.text();
-                String shopTime = cafetimeWrap.text();
                 String shopTel = shopTeldd.text();
 
                 System.out.println("점포 (" + (i+1) + ") : " + shopName);
-                System.out.println("영업시간 : " + shopTime);
                 System.out.println("주소 : " + shopAddr);
                 System.out.println("연락처 : " + shopTel);
                 System.out.println("-----------------------------------------------------------\n");
