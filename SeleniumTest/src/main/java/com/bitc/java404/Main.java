@@ -96,10 +96,12 @@ public class Main {
 //        NateLogin nateLogin = new NateLogin();
 //        nateLogin.login();
 
-//
+
 //        CoffeeBeen coffeeBeen = new CoffeeBeen();
 //        coffeeBeen.getStoreInfo();
 
+        Starbecks starbecks = new Starbecks();
+        starbecks.getStoreInfo();
 
     }
 }
