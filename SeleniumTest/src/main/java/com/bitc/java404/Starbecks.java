@@ -47,7 +47,7 @@ public class Starbecks extends WebBase{
 //                가져온 문자열을 jsoup으로 파싱
                 Document doc = Jsoup.parse(html);
 //                css 선택자로 태그명과 클래스값을 함께 사용
-                Element shopArea_pop = doc.select("div.shopArea_pop01_inner").first();
+                Element shopArea_pop = doc.select("section.shopArea_pop01_inner").first();
 //                제목을 저장하고 있는 태그를 한 번에 검색
                 Element shopTitle = shopArea_pop.select("header.titl").first().select("h6").first();
 //                주소 및 전화번호가 있는 dd 태그를 한 번에 검색
