@@ -8,18 +8,18 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import java.sql.Driver;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-        System.out.println("셀레니움 사용하여 크롤링하기");
+    public static void main(String[] args) throws Exception {
+//        System.out.println("Hello world!");
+//        System.out.println("셀레니움 사용하여 크롤링하기");
 //        셀레니움이 웹 브라우저 원격 제어를 하기 위해서 사용하는 웹 드라이버 클래스
 //        크롬, 파이어폭스, 엣지, 사파리 브라우저를 지원함
-        WebDriver driver = null;
+//        WebDriver driver = null;
 //        웹 드라이버를 통해서 가져온 html 태그를 저장하고 제어하기 위한 클래스
-        WebElement element = null;
+//        WebElement element = null;
 
 //        셀레니움 설정 정보 입력
-//        ("webdriver.사용할 브라우저.driver", "웹드라이버 위치")
-        System.setProperty("wecdriver.chrome.driver", "c:\\chromedriver.exe");
+////        ("webdriver.사용할 브라우저.driver", "웹드라이버 위치")
+//        System.setProperty("wecdriver.chrome.driver", "c:\\chromedriver.exe");
 
 //        크롬 웹 드라이버를 사용 시 추가 옵션을 설정
 //        addArguments()를 사용하여 옵션을 설정함
@@ -30,14 +30,14 @@ public class Main {
 //      	--disable-gpu : gpu를 사용하지 않기, 리눅스에서 headless 사용시 필수
 //      	--remote-allow-origins : 지정된 연결에서만 리소스 사용 허용, *사용시 모든 연결에서 허용
 //      	--no-sandbox : sandbox 프로세스 사용하지 않기, 리눅스에서 headless 사용시 필수
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized");
-        options.addArguments("--disable-popup-blocking");
-        options.addArguments("--remote-allow-origins=*");
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--start-maximized");
+//        options.addArguments("--disable-popup-blocking");
+//        options.addArguments("--remote-allow-origins=*");
 
 //        크롬 드라이버 객체를 생성 시 option 값을 매개변수로 사용하여 추가 옵션 설정
 //        웹 드라이버에 크롬 드라이버 객체를 저장
-        driver = new ChromeDriver(options);
+//        driver = new ChromeDriver(options);
 
 
 //        WebDriver 기본 명령어
@@ -74,27 +74,32 @@ public class Main {
 
 
 
-//        지정한 웹 페이지에 접속하기
-        driver.get("https://www.google.co.kr");
-        try {
-//            웹 페이지의 모든 리소스가 로딩되도록 잠시 기다림. >> 3초
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-//        접속 종료
-        driver.quit();
+////        지정한 웹 페이지에 접속하기
+//        driver.get("https://www.google.co.kr");
+//        try {
+////            웹 페이지의 모든 리소스가 로딩되도록 잠시 기다림. >> 3초
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+////        접속 종료
+//        driver.quit();
 
 
         System.out.println("셀레니움으로 자동 접속");
 
-        NaverLogin naver = new NaverLogin();
-        try {
-            naver.login();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        NaverLogin naver = new NaverLogin();
+//        naver.login();
+
+//
+//        NateLogin nateLogin = new NateLogin();
+//        nateLogin.login();
+
+//
+//        CoffeeBeen coffeeBeen = new CoffeeBeen();
+//        coffeeBeen.getStoreInfo();
+
 
     }
 }
