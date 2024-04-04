@@ -2,6 +2,11 @@ package com.bitc.java404;
 
 import com.google.gson.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,4 +150,162 @@ public class GsonTest {
         System.out.println();
 
     }
+
+    public void Tago() {
+        String jsonData = "{\"response\":{\"header\":{\"resultCode\":\"00\",\"resultMsg\":\"NORMAL SERVICE.\"},\"body\":{\"items\":{\"item\":[{\"adultcharge\":23700,\"arrplacename\":\"대전\",\"arrplandtime\":20240406061200,\"depplacename\":\"서울\",\"depplandtime\":20240406051200,\"traingradename\":\"KTX\",\"trainno\":1},{\"adultcharge\":23700,\"arrplacename\":\"대전\",\"arrplandtime\":20240406063200,\"depplacename\":\"서울\",\"depplandtime\":20240406052700,\"traingradename\":\"KTX\",\"trainno\":3},{\"adultcharge\":23700,\"arrplacename\":\"대전\",\"arrplandtime\":20240406070200,\"depplacename\":\"서울\",\"depplandtime\":20240406055700,\"traingradename\":\"KTX\",\"trainno\":5},{\"adultcharge\":23700,\"arrplacename\":\"대전\",\"arrplandtime\":20240406073800,\"depplacename\":\"서울\",\"depplandtime\":20240406063200,\"traingradename\":\"KTX\",\"trainno\":7},{\"adultcharge\":23700,\"arrplacename\":\"대전\",\"arrplandtime\":20240406074800,\"depplacename\":\"서울\",\"depplandtime\":20240406064200,\"traingradename\":\"KTX\",\"trainno\":233},{\"adultcharge\":23700,\"arrplacename\":\"대전\",\"arrplandtime\":20240406080700,\"depplacename\":\"서울\",\"depplandtime\":20240406065600,\"traingradename\":\"KTX\",\"trainno\":9},{\"adultcharge\":23700,\"arrplacename\":\"대전\",\"arrplandtime\":20240406083200,\"depplacename\":\"서울\",\"depplandtime\":20240406072700,\"traingradename\":\"KTX\",\"trainno\":11},{\"adultcharge\":23700,\"arrplacename\":\"대전\",\"arrplandtime\":20240406084700,\"depplacename\":\"서울\",\"depplandtime\":20240406074900,\"traingradename\":\"KTX\",\"trainno\":13},{\"adultcharge\":23700,\"arrplacename\":\"대전\",\"arrplandtime\":20240406090200,\"depplacename\":\"서울\",\"depplandtime\":20240406075700,\"traingradename\":\"KTX\",\"trainno\":15},{\"adultcharge\":17200,\"arrplacename\":\"대전\",\"arrplandtime\":20240406095500,\"depplacename\":\"서울\",\"depplandtime\":20240406081100,\"traingradename\":\"KTX\",\"trainno\":121}]},\"numOfRows\":10,\"pageNo\":1,\"totalCount\":66}}}";
+
+        Gson gson = new Gson();
+
+        TagoDTO tago = gson.fromJson(jsonData, TagoDTO.class);
+        TagoResponseDTO response = tago.getResponse();
+        TagoHeaderDTO header = response.getHeader();
+        TagoBodyDTO body = response.getBody();
+        TagoItemsDTO items = body.getItems();
+        List<TagoItemDTO> itemList = items.getItem();
+
+        for(TagoItemDTO item : itemList){
+            System.out.println("열차번호 : " + item.getTrainno());
+            System.out.println("열차종류 : " + item.getTraingradename());
+            System.out.println("출발지 : " + item.getDepplacename());
+            System.out.println("출발시간 : " + item.getDepplandtime());
+            System.out.println("도착지 : " + item.getArrplacename());
+            System.out.println("도착시간 : " + item.getArrplandtime());
+            System.out.println("열차운임 : " + item.getAdultcharge());
+        }
+
+    }
+
+
+
+    public void tagoParserUrl(String serviceUrl) throws IOException {
+//        열차정보를 저장할 List
+        List<TagoItemDTO> itemList = null;
+
+//        열차 정보를 제공하는 서비스의 url 정보를 입력하기 위한 자바에서 제공하는 URL 클래스 객체
+        URL url = null;
+//        지정한 URL을 기반으로 HTTP 프로토콜로 접속하여 데이터를 가져오는 클래스
+        HttpURLConnection urlConn = null;
+//        HttpURLConnection을 통해서 서비스에 접근하여 가져온 데이터를 빠르게 사용하기 위해서 BufferedReader를 사용함
+        BufferedReader reader = null;
+
+        try {
+//            매개변수로 받아온 서비스 주소를 URL 클래스 타입의 객체로 생성
+            url = new URL(serviceUrl);
+//            openConnection() 을 사용하여 지정한 url로 접속
+//            접속 정보를 HttpURLConnection 타입의 객체에 넘김
+            urlConn = (HttpURLConnection) url.openConnection();
+//            접속방식을 GET타입으로 설정
+            urlConn.setRequestMethod("GET");
+
+//            getInputStream()을 사용하여 접속한 서비스에서 데이터를 가져옴
+//            BufferedReader를 사용하여 서비스를 제공하는 곳에서 데이터를 가져와서 버퍼에 저장후 한 번에 가져옴
+            reader = new BufferedReader(new InputStreamReader((urlConn.getInputStream())));
+            
+//            StringBuilder 혹은 StringBuffer 타입을 사용하는 이유
+//            String 타입은 2개 이상의 문자열을 합하여 하나의 문자열을 생성 시 기존 문자열에 새로운 문자열을 합하여 하나의 길다란 문자열을 만드는 것이 아니라, 기존의 문자열이 저장되어 있는 메모리 공간을 그대로 두고, 새로운 메모리 공간을 생성하여 하나의 길다란 문자열을 입력하여 사용자에게 제공하는 형태임
+//            String 타입을 통한 빈번한 문자열의 연결은 비효율적인 메모리 사용을 하게 되기 때문에 StringBuilder, StringBuffer 타입을 사용하는 것이 좋음
+//            StringBuilder, StringBuffer 타입은 객체 생성 시 만들어진 하나의 메모리 공간에서 데이터를 추가, 수정, 삭제하는 것이 가능하기 때문에 메모리를 효율적으로 사용할 수 있음
+//            StringBuffer는 스레드에 안전함 (속도가 조금 느리지만 멀티스레드 환경에서 데이터 무결성을 보장해준다)
+//            StringBuilder는 스레드에 안전하지 않다 (속도가 빠르다 싱글스레드 환경에서 사용한다)
+//            StringBuilder 타입의 객체를 생성
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+//            HttpURLConnection을 통해서 가져온 네트워크 데이터를 BufferedReader를 통해서 데이터를 한줄씩 가져옴
+            while((line = reader.readLine()) != null) {
+//                가져온 데이터를 StringBuilder 타입의 문자열 변수 sb에 추가함
+                sb.append(line);
+            }
+
+            Gson gson = new Gson();
+//            sb.toString()을 사용하여 가져온 Json 문자열 데이터를 TagoDTO 클래스 타입으로 파싱
+            TagoDTO tago = gson.fromJson(sb.toString(), TagoDTO.class);
+//           TagoDTO 클래스 타입의 객체에서 필요한 데이터를 모두 출력
+            itemList = tago.getResponse().getBody().getItems().getItem();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+//            사용 후 반드시 외부 리소스 해제
+            if (reader != null) {
+                reader.close();
+            }
+            if (urlConn != null) {
+                urlConn.disconnect();
+            }
+        }
+
+        for(TagoItemDTO item : itemList){
+            System.out.println("------------------열차 정보------------------");
+            System.out.println("열차번호 : " + item.getTrainno());
+            System.out.println("열차종류 : " + item.getTraingradename());
+            System.out.println("출발지 : " + item.getDepplacename());
+            System.out.println("출발시간 : " + item.getDepplandtime());
+            System.out.println("도착지 : " + item.getArrplacename());
+            System.out.println("도착시간 : " + item.getArrplandtime());
+            System.out.println("열차운임 : " + item.getAdultcharge());
+            System.out.println("--------------------------------------------\n");
+        }
+    }
+
+
+
+//    문제 1) 영화 진흥원 api 중 일간 박스 오피스 api를 이용하여 지정한 날짜의 박스 오피스 내용을 가져와서 화면에 출력하는 프로그램을 작성
+
+//    메소드명: dailyBoxOfficeUrl(String url);
+//    main 메소드에서 dailyBoxOfficeUrl()로 url 전달 시 날짜를 입력할 수 있도록 작성
+//    출력 정보 : 랭크, 영화 코드, 영화명, 개봉일, 일일 관람객 수, 누적 관람객 수
+
+    public void dailyBoxOfficeUrl(String url) throws IOException {
+        List<DailyBoxOfficeItemDTO> itemList = null;
+        URL url2 = null;
+        HttpURLConnection urlConn = null;
+        BufferedReader reader = null;
+
+        try {
+
+            url2 = new URL(url);
+            urlConn = (HttpURLConnection) url2.openConnection();
+            urlConn.setRequestMethod("GET");
+            reader = new BufferedReader(new InputStreamReader((urlConn.getInputStream())));
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+
+            Gson gson = new Gson();
+
+            BoxOfficeDTO boxOffice = gson.fromJson(sb.toString(), BoxOfficeDTO.class);
+            itemList = boxOffice.getBoxOfficeResult().getDailyBoxOfficeList();
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (reader != null) {
+                reader.close();
+            }
+            if (urlConn != null) {
+                urlConn.disconnect();
+            }
+        }
+
+
+        for(DailyBoxOfficeItemDTO item : itemList) {
+            System.out.println("영화 순위 : " + item.getRank());
+            System.out.println("영화 코드 : " + item.getMovieCd());
+            System.out.println("영화 이름 : " + item.getMovieNm());
+            System.out.println("개봉 일자 : " + item.getOpenDt());
+            System.out.println("일일 관람객 수 : " + item.getAudiCnt());
+            System.out.println("누적 관람객 수 : " + item.getAudiAcc());
+            System.out.println("--------------------------------------------------\n");
+        }
+
+    }
+
+
 }
