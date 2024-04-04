@@ -1,8 +1,12 @@
 package com.bitc.java404;
 
 import com.google.gson.*;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -305,6 +309,40 @@ public class GsonTest {
             System.out.println("--------------------------------------------------\n");
         }
 
+    }
+
+
+
+    public void jsonToXml() throws Exception {
+//        JAXB 라이브러리를 사용하여 XML 파싱
+//        JAXB : 자바에서 xml 데이터 파싱을 도와주는 라이브러리
+//        JAXB가 Java9부터 기본 라이브러리에서 제외됨
+//        Json 문자열 파싱과 동일하게 미리 해당 데이터와 맞는 DOT(혹은 VO) 클래스를 선언하여 xml 데이터를 파싱
+//        종속성 추가가 필요함
+//        jakarta.xml.bind-api
+//        jakarta.activation-api
+//        jaxb-impl
+        
+//        Marshal : 자바 클래스를 xml 데이터로 변환
+//        UnMarshal : xml 데이터를 자바 클래스 타입의 객체로 변환
+
+        JAXBContext jc = JAXBContext.newInstance(PharmacyDTO.class);
+        Unmarshaller um = jc.createUnmarshaller();
+        
+        PharmacyDTO pharmacy = (PharmacyDTO) um.unmarshal(new File("c:\\Java404\\pharmacy.xml"));
+        List<PharmacyItemDTO> itemList = pharmacy.getBody().getItems().getItem();
+        
+        for(PharmacyItemDTO item : itemList) {
+            System.out.println("약국 번호 : " + item.getHpid());
+            System.out.println("약국 이름 : " + item.getDutyName());
+            System.out.println("전화 번호 : " + item.getDutyTel1());
+            System.out.println("약국 주소 : " + item.getDutyAddr());
+            System.out.println("개장 시간 : " + item.getDutyTime1s());
+            System.out.println("폐장 시간 : " + item.getDutyTime1c());
+            System.out.println("--------------------------------------------------------");
+        }
+        
+        
     }
 
 
