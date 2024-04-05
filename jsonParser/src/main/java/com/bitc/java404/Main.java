@@ -54,46 +54,51 @@ public class Main {
         }
 
 
-
-
 //    문제 1) 영화 진흥원 api 중 일간 박스 오피스 api를 이용하여 지정한 날짜의 박스 오피스 내용을 가져와서 화면에 출력하는 프로그램을 작성
 
 //    메소드명: dailyBoxOfficeUrl(String url);
 //    main 메소드에서 dailyBoxOfficeUrl()로 url 전달 시 날짜를 입력할 수 있도록 작성
 //    출력 정보 : 랭크, 영화 코드, 영화명, 개봉일, 일일 관람객 수, 누적 관람객 수
 
-try {
-    String url = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json";
-    String serviceKey = "?key=";
-    String opt = "&targetDt=";
-    String inputDate = "20230401";
+        try {
+            String url = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json";
+            String serviceKey = "?key=";
+            String opt = "&targetDt=";
+            String inputDate = "20230401";
 
-    String myKey = "f5eef3421c602c6cb7ea224104795888";
-    String serviceURL = url + serviceKey + myKey + opt + inputDate;
-
-
-    System.out.println("------- 일간 박스오피스 순위(기준일 : " + inputDate + ") -------\n");
-    gt.dailyBoxOfficeUrl(serviceURL);
-
-} catch (Exception e) {
-}
+            String myKey = "f5eef3421c602c6cb7ea224104795888";
+            String serviceURL = url + serviceKey + myKey + opt + inputDate;
 
 
+            System.out.println("------- 일간 박스오피스 순위(기준일 : " + inputDate + ") -------\n");
+            gt.dailyBoxOfficeUrl(serviceURL);
+
+        } catch (Exception e) {
+        }
 
 
-    try {
-        gt.jsonToXml();
-    }catch (Exception e) {
+        try {
+            gt.jsonToXml();
+        } catch (Exception e) {
 
-    }
-
-
+        }
 
 
+        try {
+            String url = "https://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyListInfoInqire";
+            String serviceKey = "?serviceKey=";
+            String myKey = "GJSg5B%2Bxk8xVApB%2BwTkP1vXZqHxmbE8a2WyLv8PgN%2BhBd3sQ%2BrSRypHGNb8G9i4mWHbLyxL2w5Al8jstKJgmCA%3D%3D";
+            String base = "&Q0=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C&Q1=%EA%B0%95%EB%82%A8%EA%B5%AC&QT=1&QN=%EC%82%BC%EC%84%B1%EC%95%BD%EA%B5%AD&ORD=NAME";
+            String opt1 = "&pageNo=";
+            String opt2 = "&numOfRows=";
+            String serviceUrl = url + serviceKey + myKey + opt1 + "3" + opt2 + "10";
 
 
+            gt.xmlToObjectUrl(serviceUrl);
 
+        } catch (Exception e) {
 
+        }
 
 
     }

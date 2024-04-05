@@ -341,8 +341,43 @@ public class GsonTest {
             System.out.println("폐장 시간 : " + item.getDutyTime1c());
             System.out.println("--------------------------------------------------------");
         }
-        
-        
+    }
+
+
+    public void xmlToObjectUrl(String serviceUrl) throws Exception {
+        List<PharmacyItemDTO> itemList = null;
+
+        URL url = null;
+        HttpURLConnection urlConn = null;
+        BufferedReader reader = null;
+
+        try {
+            url = new URL(serviceUrl);
+            urlConn = (HttpURLConnection) url.openConnection();
+            urlConn.setRequestMethod("GET");
+
+            JAXBContext jc = JAXBContext.newInstance(PharmacyDTO.class);
+            Unmarshaller um = jc.createUnmarshaller();
+
+            PharmacyDTO pharmacy = (PharmacyDTO) um.unmarshal(url);
+            itemList = pharmacy.getBody().getItems().getItem();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if(urlConn != null) {urlConn.disconnect();}
+        }
+
+        System.out.println("--------------------------------------------------------");
+        for(PharmacyItemDTO item : itemList) {
+            System.out.println("약국 번호 : " + item.getHpid());
+            System.out.println("약국 이름 : " + item.getDutyName());
+            System.out.println("전화 번호 : " + item.getDutyTel1());
+            System.out.println("약국 주소 : " + item.getDutyAddr());
+            System.out.println("개장 시간 : " + item.getDutyTime1s());
+            System.out.println("폐장 시간 : " + item.getDutyTime1c());
+            System.out.println("--------------------------------------------------------");
+        }
     }
 
 
